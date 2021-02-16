@@ -1,6 +1,7 @@
 
 .board {
   display: flex;
+  flex-direction: column;
 	align-items: stretch;
 	/*
 	display: grid;
@@ -8,6 +9,11 @@
 	column-gap: 1em;
 	row-gap: 1em;
 	*/
+}
+
+.boardColumns {
+  display: flex;
+	align-items: stretch;
 }
 
 .column {

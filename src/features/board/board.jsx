@@ -1,5 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { IssueEditor } from '../issueEditor/IssueEditor'
+import { selectEditorOpened, openIssueEditor } from '../issueEditor/issueEditorSlice'
 
 import {
   selectBoardIssues,
@@ -9,11 +11,16 @@ import {
   selectStateForUnknown,
 } from './boardSlice'
 
-import { selectIssues } from '../issues/issuesSlice'
+import { selectIssues, addIssue } from '../issues/issuesSlice'
 import cx from 'classnames'
 
 import styles from './board.module.css'
-import { AiOutlineCaretRight, AiOutlineCaretLeft, AiOutlineExclamation } from "react-icons/ai";
+import {
+  AiOutlineCaretRight,
+  AiOutlineCaretLeft,
+  AiOutlineExclamation,
+  AiFillDownCircle
+} from "react-icons/ai"
 
 export function ColumnIssueCard({issue, state}) {
   const states = useSelector(selectStates)
@@ -57,14 +64,28 @@ export function Board() {
   const issuesOnBoard = useSelector(selectIssuesOnBoard)
   const unknownIssues = Object.keys(issues).filter(i => !issuesOnBoard.includes(i))
   const stateForUnknown = useSelector(selectStateForUnknown)
+  const issueEditorOpen = useSelector(selectEditorOpened)
+  const dispatch = useDispatch();
+
   boardIssues[stateForUnknown] = boardIssues[stateForUnknown].concat(unknownIssues)
 
   return <div className={styles.board}>
-      {states.map((state) => {
-          const issuesInState = boardIssues[state]
-          let issues__ = issuesInState.map(key => ({...issues[key], key}))
-          return <StateColumn key={state} issues={issues__} state={state}/>
-        })
-      }
+      <div>
+        {
+          !issueEditorOpen &&
+          <button onClick={() => dispatch(openIssueEditor())}>
+           Add issue <AiFillDownCircle/>
+          </button>
+        }
+        {issueEditorOpen && <IssueEditor/>}
+      </div>
+      <div className={styles.boardColumns}>
+        {states.map((state) => {
+            const issuesInState = boardIssues[state]
+            let issues__ = issuesInState.map(key => ({...issues[key], key}))
+            return <StateColumn key={state} issues={issues__} state={state}/>
+          })
+        }
+      </div>
     </div>
 }

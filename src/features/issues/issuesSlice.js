@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { moveIssue } from '../board/boardSlice'
 
 export const issuesSlice = createSlice({
   name: 'issues',
@@ -7,82 +8,72 @@ export const issuesSlice = createSlice({
       "PRJ-1": {
         "summary": "MVP: Make styles",
         "assignee": "intey",
-        "state": "done"
       },
       "PRJ-2": {
         "summary": "Display single issue",
         "assignee": "intey",
-        "state": "todo"
-
       },
       "PRJ-3": {
         "summary": "Show issues that not in any state(unbinded state?)",
         "assignee": "intey",
-        "state": "done"
-
       },
       "PRJ-4": {
         "summary": "Summary max width & tooltips",
         "assignee": "intey",
-        "state": "todo"
-
-
       },
       "PRJ-5": {
         "summary": "Moving issues from state to state",
         "assignee": "intey",
-        "state": "done"
-
-
       },
       "PRJ-6": {
         "summary": "Join to API",
         "assignee": "intey",
-        "state": "todo"
-
-
       },
       "PRJ-7": {
         "summary": "Epic Streams as bigger tasks",
         "assignee": "intey",
-        "state": "todo"
-
-
       },
       "PRJ-8": {
         "summary": "Assignee info",
         "assignee": "intey",
-        "state": "todo"
-
-
       },
       "PRJ-9": {
         "summary": "Task type info",
         "assignee": "intey",
-        "state": "todo"
-
-
       },
       "PRJ-10": {
         "summary": "Sync new issues from backend",
         "assignee": "intey",
-        "state": "todo"
-
       },
       "PRJ-11": {
         "summary": "LocalStorage saving temporaly prepared",
         "assignee": "intey",
-        "state": "todo"
-
+      },
+      "PRJ-12": {
+        "summary": "Make new issue",
+        "assignee": "intey",
       }
     }
   },
   reducers: {
     addIssue: (state, action) => {
       const {key, ...rest} = action.payload
-      state[key] = rest
+      state.issues[key] = rest
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        (action) => action.type.endsWith("Issue"),
+        (state, action) => {
+          const {issueKey, fromState, toState} = action.payload
+          const issue = state.issues[issueKey]
+            if (issue)
+              issue.temporal = true
+          return state
+        }
+      )
+  }
 });
 
 export const { addIssue } = issuesSlice.actions
