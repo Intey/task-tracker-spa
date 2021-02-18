@@ -8,50 +8,62 @@ export const issuesSlice = createSlice({
       "PRJ-1": {
         "summary": "MVP: Make styles",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-2": {
         "summary": "Display single issue",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-3": {
         "summary": "Show issues that not in any state(unbinded state?)",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-4": {
         "summary": "Summary max width & tooltips",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-5": {
         "summary": "Moving issues from state to state",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-6": {
         "summary": "Join to API",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-7": {
         "summary": "Epic Streams as bigger tasks",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-8": {
         "summary": "Assignee info",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-9": {
         "summary": "Task type info",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-10": {
         "summary": "Sync new issues from backend",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-11": {
         "summary": "LocalStorage saving temporaly prepared",
         "assignee": "intey",
+        "type": "Story",
       },
       "PRJ-12": {
         "summary": "Make new issue",
         "assignee": "intey",
+        "type": "Story",
       }
     }
   },
@@ -78,19 +90,13 @@ export const issuesSlice = createSlice({
 
 export const { addIssue } = issuesSlice.actions
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-// export const incrementAsync = amount => dispatch => {
-//   setTimeout(() => {
-//     dispatch(incrementByAmount(amount));
-//   }, 1000);
-// };
-
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const selectIssues = state => state.issues.issues
+export const selectNextIssueKey = state => {
+  let keys = Object.keys(state.issues.issues)
+  return keys.reduce((maxKey, key) => {
+    const idx =  parseInt(key.split('-')[1])
+    return (idx > maxKey ? idx : maxKey)
+  }, 0)
+}
 
 export default issuesSlice.reducer

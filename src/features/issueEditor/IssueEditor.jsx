@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { closeIssueEditor } from './issueEditorSlice'
-import { addIssue } from '../issues/issuesSlice'
+import { addIssue, selectNextIssueKey } from '../issues/issuesSlice'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
   AiFillUpCircle,
@@ -16,6 +16,8 @@ export function IssueEditor() {
   const [ summary, setSummary ] = useState("")
   const [ description, setDescription ] = useState("")
 
+  const nextIssue = useSelector(selectNextIssueKey)
+
   return <div className={styles.issueEditor}>
     <button onClick={() => dispatch(closeIssueEditor())}>
       <AiFillUpCircle/>
@@ -23,7 +25,7 @@ export function IssueEditor() {
     <input type="text" value={summary} onChange={(e) => setSummary(e.target.value)} placeholder="summary"/>
     <textarea type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="description"/>
     <button onClick={() => {
-      dispatch(addIssue({key: "PRJ-N", summary, description}))
+      dispatch(addIssue({key: ("PRJ-" + nextIssue), summary, description}))
       dispatch(closeIssueEditor())
     }
     }>

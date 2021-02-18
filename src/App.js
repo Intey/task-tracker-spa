@@ -4,11 +4,13 @@ import logo from './logo.svg'
 import './App.css'
 
 import {Board} from './features/board/Board'
+import ReactTooltip from 'react-tooltip';
 
 function App() {
   return (
     <div className="App">
       <Board/>
+      <ReactTooltip delayShow={200} />
     </div>
   );
 }
